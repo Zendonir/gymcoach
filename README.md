@@ -93,7 +93,7 @@ on your own key - all self-hosted.
   recorded (the item was deleted or unlinked while you trained), the set is
   still saved and the logger says so instead of dropping it silently.
 - **Quality-of-life** - kilograms or pounds per user, an interface in English,
-  French or Russian (extensible message catalogs), multi-user with strict
+  French, Russian or German (extensible message catalogs), multi-user with strict
   per-user data isolation, and an installable PWA with offline logging.
 
 ### Track progress
@@ -389,7 +389,7 @@ than CI reaching in to a small VPS.
 - [x] Free-text (AI-parsed) set logging (opt-in "Parse with AI" fills the set
       form from plain language; you confirm before it logs)
 - [x] Progress photos (local-only upload with side-by-side compare)
-- [x] Interface localization (English, French and Russian, extensible message
+- [x] Interface localization (English, French, Russian and German, extensible message
       catalogs)
 - [x] Muscle heat map (body silhouettes tinted by weekly volume vs MEV/MRV)
 - [x] Physical gym equipment inventory, with the equipment used recorded on

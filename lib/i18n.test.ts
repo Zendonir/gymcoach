@@ -4,6 +4,7 @@ import { isLocale, locales } from '@/i18n/config';
 import englishMessages from '@/messages/en';
 import frenchMessages from '@/messages/fr';
 import russianMessages from '@/messages/ru';
+import germanMessages from '@/messages/de';
 
 function messageKeys(value: unknown, prefix = ''): string[] {
   if (typeof value === 'string') return [prefix];
@@ -16,17 +17,19 @@ function messageKeys(value: unknown, prefix = ''): string[] {
 
 describe('i18n configuration', () => {
   it('recognizes only supported locales', () => {
-    expect(locales).toEqual(['en', 'fr', 'ru']);
+    expect(locales).toEqual(['en', 'fr', 'ru', 'de']);
     expect(isLocale('en')).toBe(true);
     expect(isLocale('fr')).toBe(true);
     expect(isLocale('ru')).toBe(true);
-    expect(isLocale('de')).toBe(false);
+    expect(isLocale('de')).toBe(true);
+    expect(isLocale('es')).toBe(false);
     expect(isLocale(undefined)).toBe(false);
   });
 
   it('keeps every locale dictionary structurally complete', () => {
     expect(messageKeys(russianMessages).sort()).toEqual(messageKeys(englishMessages).sort());
     expect(messageKeys(frenchMessages).sort()).toEqual(messageKeys(englishMessages).sort());
+    expect(messageKeys(germanMessages).sort()).toEqual(messageKeys(englishMessages).sort());
   });
 
   it('uses Russian plural categories', () => {
@@ -48,5 +51,15 @@ describe('i18n configuration', () => {
     expect(t('navigation.settings')).toBe('Réglages');
     expect(t('progress.measurements.sites.armLeft')).toBe('Bras (gauche)');
     expect(t('progress.dashboard.frequency', { count: 3 })).toBe('3x/semaine');
+  });
+
+  it('uses German plural categories', () => {
+    const t = createTranslator({ locale: 'de', messages: germanMessages });
+
+    expect(t('common.counts.sets', { count: 1 })).toBe('1 Satz');
+    expect(t('common.counts.sets', { count: 3 })).toBe('3 Sätze');
+    expect(t('navigation.settings')).toBe('Einstellungen');
+    expect(t('progress.measurements.sites.armLeft')).toBe('Oberarm (links)');
+    expect(t('progress.dashboard.frequency', { count: 3 })).toBe('3x/Woche');
   });
 });

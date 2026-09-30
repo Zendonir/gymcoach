@@ -342,7 +342,7 @@ export function HistoryCalendar({
   );
 }
 
-const MONDAY_FIRST_LOCALES = ['ru', 'fr'];
+const MONDAY_FIRST_LOCALES = ['ru', 'fr', 'de'];
 const DATE_LABEL_FORMAT = {
   weekday: 'long',
   day: 'numeric',

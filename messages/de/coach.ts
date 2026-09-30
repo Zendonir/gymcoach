@@ -1,0 +1,87 @@
+export const coach = {
+  title: 'Coach',
+  description: 'Wöchentliche KI-Auswertung deines Trainings.',
+  chatTitle: 'Chat',
+  chatDescription: 'Sprich mit deinem Coach, der deine Trainingsdaten kennt.',
+  conversation: 'Unterhaltung',
+  client: {
+    generating: 'Wird generiert (10-20 s)...',
+    request: 'Wochenauswertung anfordern',
+    empty: 'Noch keine Auswertung. Starte oben deine erste.',
+    unknownError: 'Unbekannter Fehler',
+    keyMissing: '{provider}-Schlüssel fehlt',
+    keySetup: 'Setze {variable} in der .env, um den Coach zu aktivieren.',
+    applied: 'Übernommen',
+    debriefFrom: 'Auswertung vom {date}',
+    weekOf: 'Woche vom {date}',
+  },
+  chat: {
+    apiKey: 'Setze {variable} in der .env, um den Chat zu aktivieren.',
+    liveSession: 'Laufende Einheit verknüpft.',
+    new: 'Neu',
+    placeholder: 'Schreib deinem Coach...',
+    send: 'Senden',
+    liveSessionDescription:
+      'Der Coach sieht die bisher erfassten Sätze und die Programmvorgaben für dieses Workout.',
+    emptySession:
+      'Frage mitten im Training? Frag nach deinem nächsten Satz, einem Gewicht, das sich komisch anfühlt, oder einer Ersatzübung.',
+    empty:
+      'Frag nach Wegen aus einem Plateau, Trainingsvolumen, Progression, Regeneration oder Anpassungen bei Verletzungen.',
+    advisory:
+      'Der Chat berät dich, kann deine Daten aber nicht ändern. Übernimm Änderungen selbst auf der Seite Programme oder über die Wochenauswertung.',
+  },
+  context: {
+    title: 'Was dein Coach sieht',
+    teaser: 'Der Trainingskontext hinter jeder Auswertung. Zum Aufklappen tippen.',
+    history: 'Trainingsverlauf',
+    goals: 'Ziele',
+    achieved: 'erreicht',
+    noGoals: 'Keine Übungsziele festgelegt.',
+    fatigue: 'Ermüdung',
+    conditioning: 'Ausdauer',
+    readiness: 'Bereitschaft',
+    historySummary:
+      '{weeks, plural, one {# Woche} other {# Wochen}} Verlauf über {exercises, plural, one {# Übung} other {# Übungen}}.',
+    noHistory: 'Noch keine Einheiten erfasst - der Coach lernt ab deinem ersten Workout.',
+    goalProgress: '({percent}% erreicht)',
+    stalled: 'Stagnierende Übungen: {names}.',
+    noStalled: 'Keine stagnierenden Übungen erkannt.',
+    deloadActive: 'Eine geplante Deload-Woche ist aktiv.',
+    deloadRecommended: 'Deload empfohlen{reasons, select, none {.} other {: {reasons}.}}',
+    noDeload: 'Kein Deload empfohlen.',
+    conditioningSummary:
+      'Diese Woche: {minutes} min{km, select, none {} other { · {km} km}} · {sessions, plural, one {# Einheit} other {# Einheiten}} (Ziel {target} min/Woche)',
+    today: 'heute',
+    daysAgo: '{days, plural, one {vor # Tag} other {vor # Tagen}}',
+    readinessSummary: 'Letzter Check-in {when}: Bereitschaft {readiness}/5, Schlaf {sleep}/5.',
+    noReadiness: 'Kein Bereitschafts-Check-in in den letzten 7 Tagen.',
+    privacy:
+      'Eine kompakte Zusammenfassung wie diese sowie deine letzten Trainingsprotokolle Satz für Satz ist alles, was die KI erhält - niemals deine Kontodaten oder etwas außerhalb deines Trainingsverlaufs.',
+  },
+  note: {
+    title: 'Notiz an deinen Coach',
+    description:
+      'Ergänze, was die Trainingsdaten nicht zeigen, zum Beispiel eine Verletzung, Krankheit oder Reise.',
+    placeholder: 'z. B. Die Schulter zwickt, diese Woche bitte weniger Drückübungen.',
+    clear: 'Leeren',
+    save: 'Speichern',
+    saved: 'Notiz gespeichert.',
+    cleared: 'Notiz geleert.',
+    error: 'Deine Notiz konnte nicht gespeichert werden.',
+  },
+  adjustments: {
+    title: 'Vorgeschlagene Anpassungen',
+    applied: 'Bereits übernommen',
+    description:
+      'Wähle aus, was ins aktive Programm übernommen werden soll. Du kannst die Werte vor dem Bestätigen bearbeiten.',
+    aria: 'Anpassung für {exercise} übernehmen',
+    repsMin: 'Wdh. min',
+    repsMax: 'Wdh. max',
+    sets: 'Sätze',
+    rest: 'Pause (s)',
+    targetLoad: 'Zielgewicht',
+    versus: ' (statt {value})',
+    applying: 'Wird übernommen...',
+    apply: '{count, plural, one {# Anpassung} other {# Anpassungen}} übernehmen',
+  },
+};
