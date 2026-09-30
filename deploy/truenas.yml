@@ -1,0 +1,63 @@
+# GymCoach for TrueNAS SCALE (Apps -> Discover Apps -> Custom App -> Install via YAML).
+#
+# Before installing, replace the three CHANGE_ME values below and create the two
+# datasets (or adjust the paths):
+#   /mnt/tank/apps/gymcoach/postgres
+#   /mnt/tank/apps/gymcoach/uploads
+# Then open http://<truenas-ip>:3030 and create your account under "Create one".
+
+x-db-password: &db-password CHANGE_ME_DB_PASSWORD # letters and digits only
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gymcoach
+      POSTGRES_PASSWORD: *db-password
+      POSTGRES_DB: gymcoach
+    volumes:
+      - /mnt/tank/apps/gymcoach/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U gymcoach -d gymcoach']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # One-shot: the app runs as uid 1001, so hand it the uploads dataset.
+  uploads-permissions:
+    image: alpine:3.20
+    restart: 'no'
+    command: chown -R 1001:1001 /app/uploads
+    volumes:
+      - /mnt/tank/apps/gymcoach/uploads:/app/uploads
+
+  app:
+    image: ghcr.io/zendonir/gymcoach:latest
+    pull_policy: always
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      uploads-permissions:
+        condition: service_completed_successfully
+    environment:
+      DB_PASSWORD: *db-password
+      # At least 32 random characters (e.g. `openssl rand -base64 48`).
+      JWT_SECRET: CHANGE_ME_AT_LEAST_32_RANDOM_CHARACTERS
+      NODE_ENV: production
+      # Plain HTTP on the LAN. Remove this line if you serve GymCoach over HTTPS.
+      SESSION_COOKIE_SECURE: 'false'
+      UPLOADS_DIR: /app/uploads
+      # AI coach: "anthropic", "openrouter" or "demo" (canned answers, no key).
+      LLM_PROVIDER: anthropic
+      ANTHROPIC_API_KEY: CHANGE_ME_OR_LEAVE_EMPTY
+    volumes:
+      - /mnt/tank/apps/gymcoach/uploads:/app/uploads
+    # Apply database migrations (idempotent), then start the server.
+    command: >
+      sh -c "export DATABASE_URL=postgresql://gymcoach:$${DB_PASSWORD}@db:5432/gymcoach
+      && node node_modules/prisma/build/index.js migrate deploy
+      && node server.js"
+    ports:
+      - '3030:3000'

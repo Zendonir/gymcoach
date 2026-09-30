@@ -1,0 +1,55 @@
+# Publish this fork's production image (with the German locale) to GHCR so a
+# TrueNAS SCALE custom app can pull it: see deploy/truenas.yml.
+#
+# The upstream publish-image.yml is guarded to Julien-Au/gymcoach, so this
+# fork needs its own workflow. Runs on every push to main or the German locale
+# branch and on manual dispatch. Tags: a moving :latest plus an immutable
+# :sha-<short> per commit. Uses the built-in GITHUB_TOKEN, no extra secrets.
+#
+# One-time steps after the first run: enable Actions on the fork, and set the
+# GHCR package visibility to Public (packages are born private):
+# https://github.com/users/Zendonir/packages/container/gymcoach/settings
+name: Publish fork image
+
+on:
+  push:
+    branches: [main, feat/german-locale]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: publish-fork-image
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Build and push to GHCR
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: github.repository == 'Zendonir/gymcoach'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: docker/setup-buildx-action@v3
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Compute the short SHA tag
+        id: vars
+        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ghcr.io/zendonir/gymcoach:latest
+            ghcr.io/zendonir/gymcoach:sha-${{ steps.vars.outputs.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
